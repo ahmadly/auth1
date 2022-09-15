@@ -9,6 +9,7 @@ RegisterSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_C
 ConfirmSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['CONFIRM'])
 VerifySerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['VERIFY'])
 RefreshSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['REFRESH'])
+BlockSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['BLOCK'])
 
 
 class LoginView(views.APIView):
@@ -69,6 +70,16 @@ class ConfirmView(views.APIView):
 
     def post(self, request, **kwargs):
         serializer = ConfirmSerializer(data=request.data)
+        if serializer.is_valid():
+            return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class BlockView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        serializer = BlockSerializer(data=request.data)
         if serializer.is_valid():
             return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

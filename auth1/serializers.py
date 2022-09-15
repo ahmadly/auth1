@@ -1,8 +1,14 @@
 from django.conf import settings
 from django.contrib.auth import authenticate
-from rest_framework import serializers
 from django.utils.module_loading import import_string
-from .fields import AccessTokenField, RefreshTokenField, UsernameField, PasswordField
+from rest_framework import serializers
+
+from .fields import (
+    AccessTokenField,
+    PasswordField,
+    RefreshTokenField,
+    UsernameField
+)
 
 token_class = import_string(settings.REST_FRAMEWORK['TOKEN_CLASS'])
 
@@ -53,4 +59,8 @@ class RegisterSerializer(serializers.Serializer):
 
 
 class ConfirmSerializer(serializers.Serializer):
+    pass
+
+
+class BlockSerializer(serializers.Serializer):
     pass

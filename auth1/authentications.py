@@ -6,14 +6,13 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import authentication, exceptions
 from rest_framework.authentication import get_authorization_header
 
-from django.core.cache import caches
+from .schema import DataAccessModel
 
-cache = caches[settings.REST_FRAMEWORK['TOKEN_CACHE_ALIAS']]
 user_id_field = settings.REST_FRAMEWORK['USER_ID_FIELD']
 User = get_user_model()
 
 
-class TokenAuthentication(authentication.BaseAuthentication):
+class TokenAuthentication(DataAccessModel, authentication.BaseAuthentication):
     keyword = 'Bearer'
 
     def authenticate_header(self, request):
@@ -52,10 +51,8 @@ class TokenAuthentication(authentication.BaseAuthentication):
 
         return token
 
-    def get_user_id(self, user_token):
-        # TODO: check user id field from settings
-
-        _user_id = cache.get(user_token)
+    def get_user_id(self, access_token):
+        _user_id = self.cache.get(self.access_token_key(access_token))
         if _user_id:
             return _user_id
 
