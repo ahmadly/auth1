@@ -2,13 +2,23 @@ from django.conf import settings
 from django.urls import path
 from django.utils.module_loading import import_string
 
-LoginView = import_string(settings.REST_FRAMEWORK['DEFAULT_VIEW_CLASSES']['LOGIN'])
-LogoutView = import_string(settings.REST_FRAMEWORK['DEFAULT_VIEW_CLASSES']['LOGOUT'])
-VerifyView = import_string(settings.REST_FRAMEWORK['DEFAULT_VIEW_CLASSES']['VERIFY'])
-RefreshView = import_string(settings.REST_FRAMEWORK['DEFAULT_VIEW_CLASSES']['REFRESH'])
-RegisterView = import_string(settings.REST_FRAMEWORK['DEFAULT_VIEW_CLASSES']['REGISTER'])
-ConfirmView = import_string(settings.REST_FRAMEWORK['DEFAULT_VIEW_CLASSES']['CONFIRM'])
-BlockView = import_string(settings.REST_FRAMEWORK['DEFAULT_VIEW_CLASSES']['BLOCK'])
+from .settings import (
+    AUTH1_VIEWS_BLOCK,
+    AUTH1_VIEWS_CONFIRM,
+    AUTH1_VIEWS_LOGIN,
+    AUTH1_VIEWS_LOGOUT,
+    AUTH1_VIEWS_REFRESH,
+    AUTH1_VIEWS_REGISTER,
+    AUTH1_VIEWS_VERIFY
+)
+
+LoginView = import_string(AUTH1_VIEWS_LOGIN)
+LogoutView = import_string(AUTH1_VIEWS_LOGOUT)
+VerifyView = import_string(AUTH1_VIEWS_VERIFY)
+RefreshView = import_string(AUTH1_VIEWS_REFRESH)
+RegisterView = import_string(AUTH1_VIEWS_REGISTER)
+ConfirmView = import_string(AUTH1_VIEWS_CONFIRM)
+BlockView = import_string(AUTH1_VIEWS_BLOCK)
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),

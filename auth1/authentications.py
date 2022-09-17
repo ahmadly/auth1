@@ -1,14 +1,13 @@
 from typing import Union
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from rest_framework import authentication, exceptions
 from rest_framework.authentication import get_authorization_header
 
 from .schema import DataAccessModel
+from .settings import AUTH1_USER_ID_FIELD
 
-user_id_field = settings.REST_FRAMEWORK['USER_ID_FIELD']
 User = get_user_model()
 
 
@@ -60,7 +59,7 @@ class TokenAuthentication(DataAccessModel, authentication.BaseAuthentication):
 
     def get_user(self, user_id):
         q = {
-            user_id_field: user_id,
+            AUTH1_USER_ID_FIELD: user_id,
         }
 
         if User.objects.filter(**q).exists():

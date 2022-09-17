@@ -1,10 +1,12 @@
-from django.conf import settings
 from django.core.cache import caches
 
-DEFAULT_KEY_PREFIX = settings.REST_FRAMEWORK['DEFAULT_KEY_PREFIX']
+from .settings import (
+    AUTH1_KEY_PREFIX,
+    AUTH1_TOKEN_CACHE_ALIAS,
+    AUTH1_USER_ID_FIELD
+)
 
-cache = caches[settings.REST_FRAMEWORK['TOKEN_CACHE_ALIAS']]
-user_id_field = settings.REST_FRAMEWORK['USER_ID_FIELD']
+cache = caches[AUTH1_TOKEN_CACHE_ALIAS]
 
 
 def prefixed_key(f):
@@ -32,7 +34,7 @@ class DataAccessModel:
 
     def __init__(self, prefix: str = None):
         if prefix is None:
-            prefix = DEFAULT_KEY_PREFIX
+            prefix = AUTH1_KEY_PREFIX
         self.prefix = prefix
         self.cache = cache
 
@@ -56,11 +58,11 @@ class DataAccessModel:
 
     def set_access_token(self, user, access_token, access_token_expiration):
         access_key = self.access_token_key(access_token)
-        self.cache.set(access_key, getattr(user, user_id_field), access_token_expiration)
+        self.cache.set(access_key, getattr(user, AUTH1_USER_ID_FIELD), access_token_expiration)
 
     def set_refresh_token(self, user, refresh_token, refresh_token_expiration):
         refresh_key = self.refresh_token_key(refresh_token)
-        self.cache.set(refresh_key, getattr(user, user_id_field), refresh_token_expiration)
+        self.cache.set(refresh_key, getattr(user, AUTH1_USER_ID_FIELD), refresh_token_expiration)
 
     def revoke_access_token(self, access_token):
         access_key = self.access_token_key(access_token)

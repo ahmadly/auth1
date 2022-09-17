@@ -1,15 +1,24 @@
 from django.conf import settings
-from rest_framework import status, response, views, permissions
-
 from django.utils.module_loading import import_string
+from rest_framework import permissions, response, status, views
 
-LoginSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['LOGIN'])
-LogoutSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['LOGOUT'])
-RegisterSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['REGISTER'])
-ConfirmSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['CONFIRM'])
-VerifySerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['VERIFY'])
-RefreshSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['REFRESH'])
-BlockSerializer = import_string(settings.REST_FRAMEWORK['DEFAULT_SERIALIZER_CLASSES']['BLOCK'])
+from .settings import (
+    AUTH1_SERIALIZERS_BLOCK,
+    AUTH1_SERIALIZERS_CONFIRM,
+    AUTH1_SERIALIZERS_LOGIN,
+    AUTH1_SERIALIZERS_LOGOUT,
+    AUTH1_SERIALIZERS_REFRESH,
+    AUTH1_SERIALIZERS_REGISTER,
+    AUTH1_SERIALIZERS_VERIFY
+)
+
+LoginSerializer = import_string(AUTH1_SERIALIZERS_LOGIN)
+LogoutSerializer = import_string(AUTH1_SERIALIZERS_LOGOUT)
+RegisterSerializer = import_string(AUTH1_SERIALIZERS_REGISTER)
+ConfirmSerializer = import_string(AUTH1_SERIALIZERS_CONFIRM)
+VerifySerializer = import_string(AUTH1_SERIALIZERS_VERIFY)
+RefreshSerializer = import_string(AUTH1_SERIALIZERS_REFRESH)
+BlockSerializer = import_string(AUTH1_SERIALIZERS_BLOCK)
 
 
 class LoginView(views.APIView):

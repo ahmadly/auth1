@@ -1,15 +1,14 @@
 import secrets
 from datetime import timedelta
 
-from django.conf import settings
 from django.utils import timezone
 
 from .schema import DataAccessModel
-
-user_id_field = settings.REST_FRAMEWORK['USER_ID_FIELD']
-
-access_token_expiration = settings.REST_FRAMEWORK['ACCESS_TOKEN_EXPIRATION']
-refresh_token_expiration = settings.REST_FRAMEWORK['REFRESH_TOKEN_EXPIRATION']
+from .settings import (
+    AUTH1_ACCESS_TOKEN_EXPIRATION,
+    AUTH1_REFRESH_TOKEN_EXPIRATION,
+    AUTH1_USER_ID_FIELD
+)
 
 
 # TODO: create ORM class for cache
@@ -23,11 +22,11 @@ class SimpleToken(DataAccessModel):
     def generate(self, user) -> dict:
         _access_token = self.random()
         _refresh_token = self.random()
-        _access_token_expiration = self.timedelta(access_token_expiration)
-        _refresh_token_expiration = self.timedelta(refresh_token_expiration)
+        _access_token_expiration = self.timedelta(AUTH1_ACCESS_TOKEN_EXPIRATION)
+        _refresh_token_expiration = self.timedelta(AUTH1_REFRESH_TOKEN_EXPIRATION)
 
-        self.set_access_token(user, _access_token, access_token_expiration)
-        self.set_refresh_token(user, _refresh_token, refresh_token_expiration)
+        self.set_access_token(user, _access_token, AUTH1_ACCESS_TOKEN_EXPIRATION)
+        self.set_refresh_token(user, _refresh_token, AUTH1_REFRESH_TOKEN_EXPIRATION)
 
         return {
             'access_token': _access_token,

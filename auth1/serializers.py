@@ -10,7 +10,9 @@ from .fields import (
     UsernameField
 )
 
-token_class = import_string(settings.REST_FRAMEWORK['TOKEN_CLASS'])
+from .settings import AUTH1_TOKEN
+
+TokenClass = import_string(AUTH1_TOKEN)
 
 
 class LoginSerializer(serializers.Serializer):
@@ -29,7 +31,7 @@ class LoginSerializer(serializers.Serializer):
         return self.get_token(user)
 
     def get_token(self, user) -> dict:
-        return token_class().generate(user)
+        return TokenClass().generate(user)
 
 
 class LogoutSerializer(serializers.Serializer):
@@ -41,7 +43,7 @@ class LogoutSerializer(serializers.Serializer):
         access_token = attrs.get('access_token')
         refresh_token = attrs.get('refresh_token')
 
-        token_class().revoke(access_token, refresh_token)
+        TokenClass().revoke(access_token, refresh_token)
 
         return {'success': True}
 
