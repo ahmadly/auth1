@@ -35,9 +35,17 @@ class SimpleToken(DataAccessModel):
             'refresh_token_expiration': _refresh_token_expiration,
         }
 
-    def revoke(self, access_token, refresh_token) -> None:
+    def revoke(self, access_token, refresh_token) -> dict:
         self.revoke_access_token(access_token)
         self.revoke_refresh_token(refresh_token)
+
+        return {'success': True}
+
+    def verify(self, access_token=None, refresh_token=None) -> dict:
+        return {
+            'access_token': access_token,
+            'refresh_token': refresh_token,
+        }
 
 
 class JWTToken:

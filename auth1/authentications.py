@@ -6,7 +6,7 @@ from rest_framework import authentication, exceptions
 from rest_framework.authentication import get_authorization_header
 
 from .schema import DataAccessModel
-from .settings import AUTH1_USER_ID_FIELD
+from .settings import AUTH1_USER_ID_FIELD, AUTH1_USER_SELECT_RELATED, AUTH1_USER_PREFETCH_RELATED
 
 User = get_user_model()
 
@@ -62,11 +62,18 @@ class TokenAuthentication(DataAccessModel, authentication.BaseAuthentication):
             AUTH1_USER_ID_FIELD: user_id,
         }
 
-        if User.objects.filter(**q).exists():
-            _user = User.objects.get(**q)
-            return _user
+        if not User.objects.filter(**q).exists():
+            raise exceptions.AuthenticationFailed(_('User not found.'))
 
-        raise exceptions.AuthenticationFailed(_('User not found.'))
+        _user = User.objects.filter()
+
+        if AUTH1_USER_SELECT_RELATED:
+            _user = _user.select_related(*AUTH1_USER_SELECT_RELATED)
+
+        if AUTH1_USER_PREFETCH_RELATED:
+            _user = _user.prefetch_related(*AUTH1_USER_PREFETCH_RELATED)
+
+        return _user.get(**q)
 
     def check_user(self, user):
         if not user.is_active:

@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.utils.module_loading import import_string
 from rest_framework import permissions, response, status, views
 
@@ -26,7 +25,7 @@ class LoginView(views.APIView):
     permission_classes = []
 
     def post(self, request, **kwargs):
-        serializer = LoginSerializer(data=request.data)
+        serializer = LoginSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -36,7 +35,7 @@ class LogoutView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, **kwargs):
-        serializer = LogoutSerializer(data=request.data)
+        serializer = LogoutSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -46,7 +45,7 @@ class VerifyView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, **kwargs):
-        serializer = VerifySerializer(data=request.data)
+        serializer = VerifySerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -56,7 +55,7 @@ class RefreshView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, **kwargs):
-        serializer = RefreshSerializer(data=request.data)
+        serializer = RefreshSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -67,7 +66,7 @@ class RegisterView(views.APIView):
     permission_classes = []
 
     def post(self, request, **kwargs):
-        serializer = RegisterSerializer(data=request.data)
+        serializer = RegisterSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -78,7 +77,7 @@ class ConfirmView(views.APIView):
     permission_classes = []
 
     def post(self, request, **kwargs):
-        serializer = ConfirmSerializer(data=request.data)
+        serializer = ConfirmSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -88,7 +87,7 @@ class BlockView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, **kwargs):
-        serializer = BlockSerializer(data=request.data)
+        serializer = BlockSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

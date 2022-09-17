@@ -10,7 +10,7 @@ from .fields import (
     UsernameField
 )
 
-from .settings import AUTH1_TOKEN
+from .settings import AUTH1_TOKEN, AUTH1_USER_ID_FIELD
 
 TokenClass = import_string(AUTH1_TOKEN)
 
@@ -43,13 +43,22 @@ class LogoutSerializer(serializers.Serializer):
         access_token = attrs.get('access_token')
         refresh_token = attrs.get('refresh_token')
 
-        TokenClass().revoke(access_token, refresh_token)
-
-        return {'success': True}
+        return TokenClass().revoke(access_token, refresh_token)
 
 
 class VerifySerializer(serializers.Serializer):
-    pass
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    access_token = AccessTokenField()
+    refresh_token = RefreshTokenField()
+
+    def validate(self, attrs: dict) -> dict:
+        access_token = attrs.get('access_token')
+        refresh_token = attrs.get('refresh_token')
+        user = attrs.get('user')
+
+        data: dict = TokenClass().verify(access_token, refresh_token)
+        data.update({'success': True, AUTH1_USER_ID_FIELD: getattr(user, AUTH1_USER_ID_FIELD)})
+        return data
 
 
 class RefreshSerializer(serializers.Serializer):
