@@ -75,3 +75,7 @@ class ConfirmSerializer(serializers.Serializer):
 
 class BlockSerializer(serializers.Serializer):
     pass
+
+
+class ProfileSerializer(serializers.Serializer):
+    pass

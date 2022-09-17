@@ -7,6 +7,7 @@ AUTH1_VIEWS_REFRESH = getattr(settings, 'AUTH1_VIEWS_REFRESH', 'auth1.views.Refr
 AUTH1_VIEWS_REGISTER = getattr(settings, 'AUTH1_VIEWS_REGISTER', 'auth1.views.RegisterView')
 AUTH1_VIEWS_CONFIRM = getattr(settings, 'AUTH1_VIEWS_CONFIRM', 'auth1.views.ConfirmView')
 AUTH1_VIEWS_BLOCK = getattr(settings, 'AUTH1_VIEWS_BLOCK', 'auth1.views.BlockView')
+AUTH1_VIEWS_PROFILE = getattr(settings, 'AUTH1_VIEWS_PROFILE', 'auth1.views.ProfileView')
 
 AUTH1_SERIALIZERS_LOGIN = getattr(settings, 'AUTH1_SERIALIZERS_LOGIN', 'auth1.serializers.LoginSerializer')
 AUTH1_SERIALIZERS_LOGOUT = getattr(settings, 'AUTH1_SERIALIZERS_LOGOUT', 'auth1.serializers.LogoutSerializer')
@@ -15,6 +16,7 @@ AUTH1_SERIALIZERS_REFRESH = getattr(settings, 'AUTH1_SERIALIZERS_REFRESH', 'auth
 AUTH1_SERIALIZERS_REGISTER = getattr(settings, 'AUTH1_SERIALIZERS_REGISTER', 'auth1.serializers.RegisterSerializer')
 AUTH1_SERIALIZERS_CONFIRM = getattr(settings, 'AUTH1_SERIALIZERS_CONFIRM', 'auth1.serializers.ConfirmSerializer')
 AUTH1_SERIALIZERS_BLOCK = getattr(settings, 'AUTH1_SERIALIZERS_BLOCK', 'auth1.serializers.BlockSerializer')
+AUTH1_SERIALIZERS_PROFILE = getattr(settings, 'AUTH1_SERIALIZERS_PROFILE', 'auth1.serializers.ProfileSerializer')
 
 AUTH1_TOKEN_CACHE_ALIAS = getattr(settings, 'AUTH1_TOKEN_CACHE_ALIAS', 'default')
 AUTH1_TOKEN = getattr(settings, 'AUTH1_TOKEN', 'auth1.tokens.SimpleToken')

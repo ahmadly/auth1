@@ -8,10 +8,10 @@ This is a simple Django rest library that helps you to have more control over th
 
 ### Todo
 - [ ] handle jwt as a secondary auth system
-- [ ] handle USER_SELECT_RELATED and USER_PREFETCH_RELATED on user loading
+- [x] handle USER_SELECT_RELATED and USER_PREFETCH_RELATED on user loading
 - [ ] handle SESSION_LIMIT
 - [ ] create a pip package + github action + version + auto release
-- [ ] create default settings 
+- [x] create default settings 
 - [ ] create a simple doc/wiki
 
 
@@ -19,44 +19,33 @@ This is a simple Django rest library that helps you to have more control over th
 
 ```python
 
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'auth1.authentications.TokenAuthentication',
-    ],
-    'DEFAULT_VIEW_CLASSES': {
-        'LOGIN': 'auth1.views.LoginView',
-        'LOGOUT': 'auth1.views.LogoutView',
-        'VERIFY': 'auth1.views.VerifyView',
-        'REFRESH': 'auth1.views.RefreshView',
-        'REGISTER': 'auth1.views.RegisterView',
-        'CONFIRM': 'auth1.views.ConfirmView',
-        'BLOCK': 'auth1.views.BlockView',
-    },
-    'DEFAULT_SERIALIZER_CLASSES': {
-        'LOGIN': 'auth1.serializers.LoginSerializer',
-        'LOGOUT': 'auth1.serializers.LogoutSerializer',
-        'VERIFY': 'auth1.serializers.VerifySerializer',
-        'REFRESH': 'auth1.serializers.RefreshSerializer',
-        'REGISTER': 'auth1.serializers.RegisterSerializer',
-        'CONFIRM': 'auth1.serializers.ConfirmSerializer',
-        'BLOCK': 'auth1.serializers.BlockSerializer',
-    },
+AUTH1_VIEWS_LOGIN = 'auth1.views.LoginView'
+AUTH1_VIEWS_LOGOUT = 'auth1.views.LogoutView'
+AUTH1_VIEWS_VERIFY = 'auth1.views.VerifyView'
+AUTH1_VIEWS_REFRESH = 'auth1.views.RefreshView'
+AUTH1_VIEWS_REGISTER = 'auth1.views.RegisterView'
+AUTH1_VIEWS_CONFIRM = 'auth1.views.ConfirmView'
+AUTH1_VIEWS_BLOCK = 'auth1.views.BlockView'
+AUTH1_VIEWS_PROFILE = 'auth1.views.ProfileView'
 
-    'TOKEN_CACHE_ALIAS': 'default',
-    'TOKEN_CLASS': 'auth1.tokens.SimpleToken',
-    'ACCESS_TOKEN_EXPIRATION': 1 * 60 * 60,  # 1 hour
-    'REFRESH_TOKEN_EXPIRATION': 24 * 60 * 60,  # 24 hours
-    'USER_SELECT_RELATED': None,
-    'USER_PREFETCH_RELATED': None,
-    'USER_ID_FIELD': 'id',
-    'SESSION_LIMIT': 1,
-    'DEFAULT_KEY_PREFIX': 'auth1',
-}
+AUTH1_SERIALIZERS_LOGIN = 'auth1.serializers.LoginSerializer'
+AUTH1_SERIALIZERS_LOGOUT = 'auth1.serializers.LogoutSerializer'
+AUTH1_SERIALIZERS_VERIFY = 'auth1.serializers.VerifySerializer'
+AUTH1_SERIALIZERS_REFRESH = 'auth1.serializers.RefreshSerializer'
+AUTH1_SERIALIZERS_REGISTER = 'auth1.serializers.RegisterSerializer'
+AUTH1_SERIALIZERS_CONFIRM = 'auth1.serializers.ConfirmSerializer'
+AUTH1_SERIALIZERS_BLOCK = 'auth1.serializers.BlockSerializer'
+AUTH1_SERIALIZERS_PROFILE = 'auth1.serializers.ProfileSerializer'
+
+AUTH1_TOKEN_CACHE_ALIAS = 'default'
+AUTH1_TOKEN = 'auth1.tokens.SimpleToken'
+AUTH1_ACCESS_TOKEN_EXPIRATION = 1 * 60 * 60
+AUTH1_REFRESH_TOKEN_EXPIRATION = 24 * 60 * 60
+AUTH1_USER_SELECT_RELATED = []
+AUTH1_USER_PREFETCH_RELATED = []
+AUTH1_USER_ID_FIELD = 'id'
+AUTH1_USER_NAME_FIELD = 'username'
+AUTH1_SESSION_LIMIT = 0
+AUTH1_KEY_PREFIX = 'auth1'
+
 ```

@@ -9,7 +9,8 @@ from .settings import (
     AUTH1_VIEWS_LOGOUT,
     AUTH1_VIEWS_REFRESH,
     AUTH1_VIEWS_REGISTER,
-    AUTH1_VIEWS_VERIFY
+    AUTH1_VIEWS_VERIFY,
+    AUTH1_VIEWS_PROFILE,
 )
 
 LoginView = import_string(AUTH1_VIEWS_LOGIN)
@@ -19,6 +20,7 @@ RefreshView = import_string(AUTH1_VIEWS_REFRESH)
 RegisterView = import_string(AUTH1_VIEWS_REGISTER)
 ConfirmView = import_string(AUTH1_VIEWS_CONFIRM)
 BlockView = import_string(AUTH1_VIEWS_BLOCK)
+ProfileView = import_string(AUTH1_VIEWS_PROFILE)
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
@@ -28,4 +30,5 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('confirm/', ConfirmView.as_view(), name='confirm'),
     path('block/', BlockView.as_view(), name='block'),
+    path('profile/', ProfileView.as_view(), name='profile'),
 ]

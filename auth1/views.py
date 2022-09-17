@@ -6,6 +6,7 @@ from .settings import (
     AUTH1_SERIALIZERS_CONFIRM,
     AUTH1_SERIALIZERS_LOGIN,
     AUTH1_SERIALIZERS_LOGOUT,
+    AUTH1_SERIALIZERS_PROFILE,
     AUTH1_SERIALIZERS_REFRESH,
     AUTH1_SERIALIZERS_REGISTER,
     AUTH1_SERIALIZERS_VERIFY
@@ -18,6 +19,7 @@ ConfirmSerializer = import_string(AUTH1_SERIALIZERS_CONFIRM)
 VerifySerializer = import_string(AUTH1_SERIALIZERS_VERIFY)
 RefreshSerializer = import_string(AUTH1_SERIALIZERS_REFRESH)
 BlockSerializer = import_string(AUTH1_SERIALIZERS_BLOCK)
+ProfileSerializer = import_string(AUTH1_SERIALIZERS_PROFILE)
 
 
 class LoginView(views.APIView):
@@ -88,6 +90,16 @@ class BlockView(views.APIView):
 
     def post(self, request, **kwargs):
         serializer = BlockSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProfileView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        serializer = ProfileSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
