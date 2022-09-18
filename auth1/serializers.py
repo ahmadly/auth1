@@ -9,13 +9,14 @@ from .fields import (
     RefreshTokenField,
     UsernameField
 )
+from .schema import DataAccessModel
 
-from .settings import AUTH1_TOKEN, AUTH1_USER_ID_FIELD
+from .settings import AUTH1_TOKEN, AUTH1_USER_ID_FIELD, AUTH1_COUNTER
 
 TokenClass = import_string(AUTH1_TOKEN)
 
 
-class LoginSerializer(serializers.Serializer):
+class LoginSerializer(DataAccessModel, serializers.Serializer):
     username = UsernameField()
     password = PasswordField()
 
@@ -28,13 +29,18 @@ class LoginSerializer(serializers.Serializer):
         if not user:
             raise serializers.ValidationError('Invalid username/password')
 
+        if AUTH1_COUNTER:
+            self.cache.incr(self.login_counter_key(user.id))
+
         return self.get_token(user)
 
     def get_token(self, user) -> dict:
         return TokenClass().generate(user)
 
 
-class LogoutSerializer(serializers.Serializer):
+class LogoutSerializer(DataAccessModel, serializers.Serializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     # TODO: do we need both token and refresh_token?
     access_token = AccessTokenField()
     refresh_token = RefreshTokenField()
@@ -42,6 +48,10 @@ class LogoutSerializer(serializers.Serializer):
     def validate(self, attrs: dict) -> dict:
         access_token = attrs.get('access_token')
         refresh_token = attrs.get('refresh_token')
+        user = attrs.get('user')
+
+        if AUTH1_COUNTER:
+            self.cache.decr(self.login_counter_key(user.id))
 
         return TokenClass().revoke(access_token, refresh_token)
 

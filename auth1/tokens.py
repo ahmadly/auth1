@@ -12,6 +12,7 @@ from .settings import (
 
 
 # TODO: create ORM class for cache
+# TODO: i think we cant pass top level object like user to this class
 class SimpleToken(DataAccessModel):
     def random(self, length=32) -> str:
         return secrets.token_hex(length)

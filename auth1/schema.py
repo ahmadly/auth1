@@ -50,6 +50,10 @@ class DataAccessModel:
     def user_session_key(self, user_id: int) -> str:
         return f"user_sessions:{user_id}"
 
+    @prefixed_key
+    def login_counter_key(self, user_id: int):
+        return f"login_counter:{user_id}"
+
     def set(self, key: str, value, timeout: int = None) -> None:
         self.cache.set(key, value, timeout)
 
