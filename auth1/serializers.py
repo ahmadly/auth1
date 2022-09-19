@@ -11,7 +11,7 @@ from .fields import (
 )
 from .schema import DataAccessModel
 
-from .settings import AUTH1_TOKEN, AUTH1_USER_ID_FIELD, AUTH1_COUNTER
+from .settings import AUTH1_TOKEN, AUTH1_USER_ID_FIELD, AUTH1_LOGIN_COUNTER, AUTH1_SESSION_LIMIT
 
 TokenClass = import_string(AUTH1_TOKEN)
 
@@ -29,8 +29,27 @@ class LoginSerializer(DataAccessModel, serializers.Serializer):
         if not user:
             raise serializers.ValidationError('Invalid username/password')
 
-        if AUTH1_COUNTER:
+        if AUTH1_LOGIN_COUNTER:
             self.cache.incr(self.login_counter_key(user.id))
+
+        # handle limit session
+        if AUTH1_SESSION_LIMIT != 0:
+            # each time user gets login, we have access and refresh token
+            # so i need to store all tokens to determines how many active sesion he have
+            # session_counter:{user_id}:int
+            # sessions:{user_id}[
+            #   {access_token,refresh_token},
+            #   {access_token,refresh_token},
+            #   {access_token,refresh_token},
+            # ]
+
+            # each time user loged in, we cmp AUTH1_SESSION_LIMIT with session_counter:{user_id}:int
+            # if user passed the AUTH1_SESSION_LIMIT, so i have to pop first token, and add it into blacklist tokens
+            # we dont check user tokens from this table, we only keep here to blacklist if requred
+            # so we have to update this table each time user login or logout
+
+            # also i think we need to use pipeline to speedup validation
+            pass
 
         return self.get_token(user)
 
@@ -49,9 +68,6 @@ class LogoutSerializer(DataAccessModel, serializers.Serializer):
         access_token = attrs.get('access_token')
         refresh_token = attrs.get('refresh_token')
         user = attrs.get('user')
-
-        if AUTH1_COUNTER:
-            self.cache.decr(self.login_counter_key(user.id))
 
         return TokenClass().revoke(access_token, refresh_token)
 

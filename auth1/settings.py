@@ -19,13 +19,19 @@ AUTH1_SERIALIZERS_BLOCK = getattr(settings, 'AUTH1_SERIALIZERS_BLOCK', 'auth1.se
 AUTH1_SERIALIZERS_PROFILE = getattr(settings, 'AUTH1_SERIALIZERS_PROFILE', 'auth1.serializers.ProfileSerializer')
 
 AUTH1_TOKEN_CACHE_ALIAS = getattr(settings, 'AUTH1_TOKEN_CACHE_ALIAS', 'default')
+
 AUTH1_TOKEN = getattr(settings, 'AUTH1_TOKEN', 'auth1.tokens.SimpleToken')
+
 AUTH1_ACCESS_TOKEN_EXPIRATION = getattr(settings, 'AUTH1_ACCESS_TOKEN_EXPIRATION', 1 * 60 * 60)  # 1 hours
 AUTH1_REFRESH_TOKEN_EXPIRATION = getattr(settings, 'AUTH1_REFRESH_TOKEN_EXPIRATION', 24 * 60 * 60)  # 24 hours
+
 AUTH1_USER_SELECT_RELATED = getattr(settings, 'AUTH1_USER_SELECT_RELATED', [])
 AUTH1_USER_PREFETCH_RELATED = getattr(settings, 'AUTH1_USER_PREFETCH_RELATED', [])
 AUTH1_USER_ID_FIELD = getattr(settings, 'AUTH1_USER_ID_FIELD', 'id')
 AUTH1_USER_NAME_FIELD = getattr(settings, 'AUTH1_USER_NAME_FIELD', 'username')
+
 AUTH1_SESSION_LIMIT = getattr(settings, 'AUTH1_SESSION_LIMIT', 0)
+
 AUTH1_KEY_PREFIX = getattr(settings, 'AUTH1_KEY_PREFIX', 'auth1')
-AUTH1_COUNTER = getattr(settings, 'AUTH1_KEY_PREFIX', True)
+
+AUTH1_LOGIN_COUNTER = getattr(settings, 'AUTH1_LOGIN_COUNTER', True)

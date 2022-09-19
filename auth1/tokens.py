@@ -23,6 +23,8 @@ class SimpleToken(DataAccessModel):
     def generate(self, user) -> dict:
         _access_token = self.random()
         _refresh_token = self.random()
+
+        # FIXME: i think we can only create + validate token at this class
         _access_token_expiration = self.timedelta(AUTH1_ACCESS_TOKEN_EXPIRATION)
         _refresh_token_expiration = self.timedelta(AUTH1_REFRESH_TOKEN_EXPIRATION)
 
@@ -50,4 +52,8 @@ class SimpleToken(DataAccessModel):
 
 
 class JWTToken:
+    pass
+
+
+class HMACToken:
     pass
